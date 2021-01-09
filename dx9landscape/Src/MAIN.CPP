@@ -63,14 +63,14 @@ static int refractionTexIndex = 4;
 	static string workingDir = "..\\dependencies\\runtime\\";
 #endif
 static string dataPath = workingDir;
-static string shaderPath = workingDir + "Shaders\\";
+static string shaderPath = "Shaders\\";
 
 //Paths in pak file
 static string gfxPath = "gfx\\";
 static string audioPath = "audio\\";
 
 Cpak dataPak;
-Cpak* shaderPak = NULL;
+Cpak* shaderPak = &dataPak;
 //----------------------------------------------
 
 void setFog();
@@ -88,14 +88,6 @@ void initApp()
 	
 	settings.d3di.BackBufferWidth=1280;
 	settings.d3di.BackBufferHeight=1024;
-	//settings.d3di.BackBufferCount=3;
-	settings.d3di.PresentationInterval=D3DPRESENT_INTERVAL_ONE;
-	settings.d3di.Windowed=true;
-	//settings.d3di.PresentationInterval=D3DPRESENT_INTERVAL_ONE;
-	settings.d3di.SwapEffect=D3DSWAPEFFECT_DISCARD;
-	settings.d3di.behaviorFlags=D3DCREATE_MIXED_VERTEXPROCESSING;
-	settings.d3di.MultiSampleType=D3DMULTISAMPLE_8_SAMPLES;
-	//settings.d3di.MultiSampleType=D3DMULTISAMPLE_NONE;
 		
 	initDx(settings.d3di);
 
