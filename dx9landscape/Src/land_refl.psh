@@ -1,0 +1,56 @@
+ps_2_x
+
+//c0.xyz: camera pos  .w: is camera above water
+//c2.x: kameradjup
+//c3.x: rättvänt landskap -1,annars 1
+
+def c10, 0, 1, 0, 0   //up-normal   .w=min transparency
+def c11, 0.55, 0.55, 0.55, 0  //ambient light
+def c12, 1, 1, 1, 0  //complement ambient
+
+
+def c20, 0, 0, 0, 0
+def c21, 1, 1, 1, 1
+
+def c30, 0.1, 0.5, 0.002, 80
+def c31, 3, 0, 0, 0
+
+dcl_2d s0
+dcl_2d s3
+dcl_2d s4
+dcl_2d s5
+
+dcl t0.xy
+dcl t1.xy
+dcl t2.xy
+dcl t3.xy
+dcl t6.xyz  //vertex pos
+
+/*mov r0, t6.y
+texkill r0
+mul r0.y, r0.y, c3.x
+add r0.y, r0.y, c31.x
+texkill r0*/
+
+//Sampling and blending ops----------------
+
+texld r0, t0, s0	//map 1
+texld r2, t2, s3	//grass
+texld r3, t3, s4	//dirt
+
+mul r4, r0.b, r2
+mad r5, r0.g, r3, r4
+
+texld r2, t1, s5	//rock
+mad r3, r0.r, r2, r5
+
+//lightmap
+mul r0.a, r0.a, c12.xyz
+add_sat r0.a, r0.a, c11.xyz
+mul r3, r3, r0.a
+//----------------------------------------
+//mov r3, r2
+mov r3.a, c21
+mov oC0, r3
+
+//mov oC0, r0

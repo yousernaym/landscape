@@ -1,0 +1,134 @@
+ps_2_x
+
+//c0.xyz: camera pos  .w: is camera above water
+//c1.x: camera height blend factor
+//c2.x: kameradjup
+
+def c10, 0, 1, 0, 0   //up-normal   .w=min transparency
+def c11, 0.55, 0.55, 0.55, 0  //ambient light
+def c12, 1, 1, 1, 0  //complement ambient
+def c13, 10, 0, 0, 0
+
+def c20, 0, 0, 0, 0
+def c21, 1, 1, 1, 1
+
+def c30, 0.1, 0.5, 0.002, 80
+def c31, 10000, 0, 0, 0
+
+dcl_2d s0  //map 1
+dcl_2d s1  //map 2
+dcl_2d s2  //linked water map: //.a=alphamap(1 on water, 0 outside water), .x=lightmap(not used here)
+dcl_2d s3  //grass
+dcl_2d s4  //dirt
+dcl_2d s5  //rock
+dcl_2d s6  //sand
+dcl_2d s7  //rock 2
+dcl_2d s8  //caustics
+
+//tcoords
+dcl t0.xyzw  //xy=texmap, zw=stretched
+dcl t1.xy  //rock
+dcl t2.xy  //grass
+dcl t3.xy  //dirt
+dcl t4.xy  //caustics
+dcl t5.xy  //stretched caustics
+
+dcl t6.xyz  //vertex pos
+dcl t7.xy     //alpha, distance to vertex 0-1
+
+dcl v0  //dimavstånd (.x)
+dcl v1  //dimfärg
+
+//Sampling and blending ops----------------
+
+//stretched coords
+mov r0.xy, t0.zw
+mov r0.z, t7.y
+
+texld r1, t0, s0	//map 1
+texld r2, t0, s1	//map 2
+//------------------------------------------
+texld r3, t2, s3	//grass
+texld r4, r0, s3	//grass stretched
+lrp r5, r0.z, r4, r3
+
+texld r3, t3, s4	//dirt
+//texld r4, r0, s4	//dirt stretched
+//lrp r6, r0.z, r4, r3
+//-------------------------------------------------
+mul r5, r5, r1.b    //grass * grass_intensity
+mad r7, r1.g, r3, r5 //dirt * dirt_intensity + grass 
+//----------------------------------------------
+texld r3, t1, s5	 //rock
+texld r4, r0, s5 //rock stretched
+lrp r5, r0.z, r4, r3
+//-------------------------------------------
+mad r6, r1.r, r5, r7 //rock + current
+//----------------------------------------------
+texld r3, t1, s7	 //rock 2
+//texld r4, r0, s7	//rock 2 stretched
+//lrp r5, r0.z, r4, r3
+//-------------------------------------------
+mad r5, r2.r, r3, r6 //rock 2 + current
+//----------------------------------------------
+
+/*texld r2, t0, s4	  //snow, dirt identity
+//mul r2, c30.y, r2
+lrp r4, c30.x, r2, r3*/
+
+texld r3, t1, s6	//sand
+texld r4, r0, s6	//sand stretched
+lrp r6, r0.z, r4, r3
+
+mad r4, r2.g, r6, r5
+
+//mul r5, r5, c2.x   //multiplicera med kameradjup
+
+//caustics--------------------
+texld r10, t4, s8
+texld r11, t5, s8   //stretched
+lrp r13, r2.b, r10, r11     //blend depending on depth
+//mov r13, r10
+
+mul r2.b, r2.b, c1.x    //scale intensity depending on camera height(fade away when increasing altitude)
+
+//clip caust above water
+mul r3.x, -t6.y, c31.x  //*10000d:
+add_sat r3.x, r3.x, c20  //+0 (clip to [0,1])    r3.x:0 -> pixel above water, 1 -> under water
+mul r2.b, r2.b, r3.x
+
+mad r5, r2.b, r13, r4
+//---------------------------
+
+/*mov r0, c20
+mov r0.xyz, r1.a
+mov oC0, r0*/
+
+//lightmap
+//add ambient light
+mul r1.a, r1.a, c12.xyz
+add_sat r1.a, r1.a, c11.xyz
+//mul r1.a, r1.a, c13.x
+
+mul r5, r5, r1.a
+
+texld r2, t0, s2  //water map
+//under water-----------------------------
+//clip fog above water (smooth transition is desired, so use water alpha map(r2.a) instead of interpolated vertex height(t6.y)
+sub r4.x, c21.x, r2.a   //1-wmap
+mul r4.x, r4.x, c0.w
+add_sat r4.x, v0.x, r4.x  
+
+//pixel perfect clip
+/*sub r3.y, c21.x, r3.x
+add_sat r4.x, v0.x, r3.y*/  
+
+//mov r4.x, v0.x          // don't clip
+lrp r5, r4.x, r5, v1
+//-------------------------------------------
+
+mul r5.a, t7.x, r2.a       //dest transp * wmap
+//----------------------------------------
+
+mov oC0, r5
+

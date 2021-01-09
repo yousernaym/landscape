@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup
+    Condition="'$(FX_filesBeforeTargets)' == '' and '$(FX_filesAfterTargets)' == '' and '$(ConfigurationType)' != 'Makefile'">
+    <FX_filesBeforeTargets>Midl</FX_filesBeforeTargets>
+    <FX_filesAfterTargets>CustomBuild</FX_filesAfterTargets>
+  </PropertyGroup>
+  <PropertyGroup>
+    <FX_filesDependsOn
+      Condition="'$(ConfigurationType)' != 'Makefile'">_SelectedFiles;$(FX_filesDependsOn)</FX_filesDependsOn>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <FX_files>
+      <disableOpt>False</disableOpt>
+      <debug>False</debug>
+      <flowControl>False</flowControl>
+      <targetProfile>fx_2_0</targetProfile>
+      <CommandLineTemplate>fxc [AdditionalOptions] [AllOptions] /Fo"$(SolutionDir)Dependencies\Runtime\shaders\%(Filename).fxo" "%(FullPath)"</CommandLineTemplate>
+      <Outputs>$(SolutionDir)Dependencies\Runtime\shaders\(Filename).fxo</Outputs>
+      <ExecutionDescription>Compiling effect: %(Filename)%(Extension)</ExecutionDescription>
+      <AdditionalDependencies></AdditionalDependencies>
+    </FX_files>
+  </ItemDefinitionGroup>
+</Project>

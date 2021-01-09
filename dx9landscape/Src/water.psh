@@ -1,0 +1,150 @@
+ps_2_x
+
+//c0.x: distance texture blending weight
+//c2: specular
+//c3.x: specular power
+//c4-c7: reflection matrix
+
+//c10.x: b_envmap
+
+//def c11, 0.5, 0.6, 0.8, 0  //water color
+def c11, 1, 1, 1, 1
+def c12, 0.5, 0, 0, 0
+
+def c20, 0, 0, 0, 0
+def c21, 1, 1, 1, 1
+def c22, 2, 2, 2, 2
+def c23, 3, 3, 3, 3
+def c24, 4, 4, 4, 4
+
+def c28, 1.5, 0, 0, 0
+def c29, 0.2, 1, 384, 0.6
+def c30, 0.4, 0.2, 100, 0.7
+def c31, 0,1,0,0  //up-normal
+
+dcl t0.xy   //stretch
+dcl t1.xy   //distance tex
+dcl t2.xy   //normal map
+//dcl t3.xyz    //light dir   (points towards pixel)
+dcl t4.xyz  //view vector (from pixel) .w=0
+dcl t5.xy      //normal map 2
+dcl t6.xyzw  //vertex pos
+
+dcl_2d s0   //local reflections
+dcl_2d s1  //.a=alphamap(1 on water, 0 outside water), .x=lightmap(currently not used)
+dcl_2d s2  //normal map
+dcl_2d s3  //distance tex
+dcl_cube s4  //sky reflections
+
+//nrm r12, t3.xyz
+nrm r13, t4.xyz
+
+//mov r12, t3.xyz
+//mov r13, t4.xyz
+
+texld r11, t0, s1   //sample lightmap
+
+//Retrieving current normal (r0)-------
+texld r0, t2, s2
+mov r1, c22
+mad r0, r0, r1, -c21
+
+texld r1, t5, s2
+mov r2, c22
+mad r1, r1, r2, -c21
+mul r1, r1, c29.x   //minska normalens betydelse
+
+add r1, r0, r1
+mul r1.y, r1.y, c30.z
+nrm r0, r1
+//------------------------------------
+
+//spegelblank yta
+//mov r0, c31
+
+dp3 r1.w, r13, r0 //view-normal angle
+
+//Calculation of the view reflection vector (r1.xyz)-----
+mul r2.w, r1.w, c22.x //*2
+
+//r1=r2.w*N-V
+mul r1.xyz, r2.w, r0.xyz
+sub r1.xyz, r1, r13
+//----------------------------------------------------
+
+//Calculating the halfway vector (r2.xyz)----------
+/*mov r10, r13.xyz
+sub r3.xyz, r10, r12
+nrm r2.xyz, r3.xyz
+
+//Specular intensity  (r3.y)
+dp3 r3.y, r2, r0  //H dot N
+pow r3.y, r3.y, c3.x  //^s_power
+
+//specular color (r5) = specular intensity * specular * lightmap
+mul r5, r3.y, c2
+mul r5, r5, r11.x
+*/
+//-----------------------------------------
+
+//waves-------------------------
+/*mov r2, r0
+mov r2.z, c20
+mov r3, r0
+mov r3.x, c20
+dp3 r2.x, r2, r0
+dp3 r2.z, r3, r0  
+sub r2.xz, c21, r2.xz
+mul r2.xz, r0.xz, r2.xz
+mov r2.y, r0.y
+mul r2, r2, c29.y
+
+add r3, t6, r2
+sub r3.y, r3.y, c29.y
+mov r3.w, c21
+*/
+
+/*mov r3, t6
+add r3.xz, t6.xz, r2*/
+//-----------------------------
+mul r2, r0, c29.y 
+add r3, r2, t6
+sub r3.y, r3.y, c29.y
+mov r3.w, c21
+
+m4x4 r2, r3, c4
+min r2.y, r2.y, c29.z
+//------------------------------------------------------
+//Blending ops------------------------------------------
+texld r6, r1, s4     //sampling cube map
+texldp r7, r2, s0     //sampling local reflection texture
+//add_sat r6, r6, r5	 //add specular color to cube map
+lrp r8, r7.a, r7, r6    //blending cube and local refl
+texld r6, t1, s3       //sampling distance tex
+lrp r7, c0.x, r6, r8    //blending current and distance tex
+
+//mov r7, r6 //only cube map
+
+//--------------------------------------------------------------
+//water transparency
+//dp3 r2.x, -r12, r0  //lightnormal angle
+//mul r1.w, r1.w, r2.x
+sub r1.w, c21.x, r1.w   //1 - angle
+
+/*max r2.x, r8.r, r8.g
+max r2.y, r2.x, r8.b
+//mul r2.y, r2.y, c28.x
+add r2.y, r2.y, c29.w
+min r2.y, r2.y, c21
+mul r1.w, r1.w, r2.y*/
+
+//mul r1.w, r1.w, c12.x   //modulera genomskinlighet
+//add_sat r7.a, r1.w, c30.x
+
+mov r7.a, r1.w
+
+mul r7.a, r7.a, r11.a
+
+mov oC0, r7
+//mov oC0, c21
+

@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Game engine">
+      <UniqueIdentifier>{629e1213-f2a2-4653-9a93-6f3d496839e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game engine\DirectX">
+      <UniqueIdentifier>{d6156c95-2c2c-47e5-8d50-c7158f0562e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game engine\General">
+      <UniqueIdentifier>{7a824de0-e59b-4a96-a62e-6f879ac20642}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game engine\DirectX\Audio">
+      <UniqueIdentifier>{e355956c-3d5d-4946-945e-b0f7d5976209}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game engine\DirectX\Gfx">
+      <UniqueIdentifier>{96f17a9b-3dcb-4aad-b49b-f21f39801fce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game engine\DirectX\Gfx\2d">
+      <UniqueIdentifier>{009176b7-63bc-430e-ac16-584adcf5d13f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game engine\DirectX\Gfx\3d">
+      <UniqueIdentifier>{8e06491d-2948-4bc2-98ee-c7b046ee5484}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game engine\DirectX\Gfx\Shaders">
+      <UniqueIdentifier>{865e7da7-8345-46bc-afa4-80a392bc572e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game engine\DirectX\Std dx">
+      <UniqueIdentifier>{3ef2e832-130b-49f6-8c53-130e7720102c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\MAIN.CPP">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\winstuff.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Font.cpp">
+      <Filter>Game engine\DirectX\Gfx\2d</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Gui.cpp">
+      <Filter>Game engine\DirectX\Gfx\2d</Filter>
+    </ClCompile>
+    <ClCompile Include="src\pixelManip.cpp">
+      <Filter>Game engine\DirectX\Gfx\2d</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PrintUsing2.cpp">
+      <Filter>Game engine\DirectX\Gfx\2d</Filter>
+    </ClCompile>
+    <ClCompile Include="src\surfaces.cpp">
+      <Filter>Game engine\DirectX\Gfx\2d</Filter>
+    </ClCompile>
+    <ClCompile Include="src\envmap.cpp">
+      <Filter>Game engine\DirectX\Gfx\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="src\landscape.cpp">
+      <Filter>Game engine\DirectX\Gfx\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="src\object3d.cpp">
+      <Filter>Game engine\DirectX\Gfx\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Shaders.cpp">
+      <Filter>Game engine\DirectX\Gfx\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="src\General.cpp">
+      <Filter>Game engine\General</Filter>
+    </ClCompile>
+    <ClCompile Include="src\pak.cpp">
+      <Filter>Game engine\General</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dxStuff.cpp">
+      <Filter>Game engine\DirectX\Std dx</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\MAIN.H">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUI.h">
+      <Filter>Game engine\DirectX\Gfx\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="src\pixelManip.h">
+      <Filter>Game engine\DirectX\Gfx\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PrintUsing2.h">
+      <Filter>Game engine\DirectX\Gfx\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Surfaces.h">
+      <Filter>Game engine\DirectX\Gfx\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="src\envmap.h">
+      <Filter>Game engine\DirectX\Gfx\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="src\landscape.h">
+      <Filter>Game engine\DirectX\Gfx\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="src\object3d.h">
+      <Filter>Game engine\DirectX\Gfx\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Shaders.h">
+      <Filter>Game engine\DirectX\Gfx\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="src\dxstuff.h">
+      <Filter>Game engine\DirectX\Std dx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GfxEngine.h">
+      <Filter>Game engine\DirectX\Gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameEngine.h">
+      <Filter>Game engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\General.h">
+      <Filter>Game engine\General</Filter>
+    </ClInclude>
+    <ClInclude Include="src\pak.h">
+      <Filter>Game engine\General</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\common.fxi">
+      <Filter>Game engine\DirectX\Gfx\Shaders</Filter>
+    </None>
+    <None Include="src\water.fxi">
+      <Filter>Game engine\DirectX\Gfx\Shaders</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FX_files Include="src\landscape.fx">
+      <Filter>Game engine\DirectX\Gfx\Shaders</Filter>
+    </FX_files>
+    <FX_files Include="src\sky.fx">
+      <Filter>Game engine\DirectX\Gfx\Shaders</Filter>
+    </FX_files>
+  </ItemGroup>
+</Project>

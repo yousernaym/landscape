@@ -1,0 +1,35 @@
+//Shared parameters-----------------------------------------------------------
+shared const float3 camPos = float3(0,0,0);
+shared const float3 lightDir = float3(1,1,1);
+shared const float4 lightAmbient = float4(0.55, 0.55, 0.55, 0.55);
+shared const float4 lightDiffuse = float4(1, 1, 1, 1);
+shared const float4 fogCol = float4(0.1, 0.4, 0.7, 1);
+shared const float fogStart = 2;
+shared const float fogLength = 100;
+shared const float maxFog = 0.25;
+//shared const float maxFog = 0;
+
+//Water turbidness
+shared const float4 turbCol = float4(0.0, 0.08, 0.207, 1);
+shared const float maxTurb = 1;
+shared const float turbStart = -25;
+shared const float turbLength = 70;
+
+//----------------------------------------------------------------------------
+
+float4x4 wvp : WVP;
+
+struct STDPS_OUTPUT
+{
+	float4 color : COLOR;
+};
+
+float calcFog(float3 vertexPos : POSITION) : FOG
+{
+	return maxFog * saturate((distance(vertexPos, camPos) - fogStart) / fogLength);
+}
+
+
+	
+
+

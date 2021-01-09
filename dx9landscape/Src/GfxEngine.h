@@ -1,0 +1,7 @@
+#include "surfaces.h"
+#include "pixelmanip.h"
+#include "object3d.h"
+#include "gui.h"
+#include "landscape.h"
+#include "envmap.h"
+#include "shaders.h"

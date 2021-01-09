@@ -1,0 +1,64 @@
+ps_2_x
+
+//c0.x: distance texture blending weight
+//c2: specular
+//c3.x: specular power
+
+//c10.x: b_envmap
+
+def c11, 1, 1, 1, 1
+def c12, 0.5, 0, 0, 0
+def c13, 0.13, 0.2, 0.7, 1  //water color
+
+def c20, 0, 0, 0, 0
+def c21, 1, 1, 1, 1
+def c22, 2, 2, 2, 2
+def c23, 3, 3, 3, 3
+def c24, 4, 4, 4, 4
+
+def c29, 0.2, 0, 0, 0
+def c30, 0.4, 0.2, 100, 0.7
+def c31, 0,1,0,0  //up-normal
+
+
+dcl t1.xy   //distance tex
+dcl t2.xy   //normal map
+dcl t4.xyzw  //view vector (from pixel) .w=0
+dcl t5.xy      //normal map 2
+
+dcl_2d s2  //normal map
+dcl_2d s3  //distance tex
+
+nrm r13, t4
+
+//Retrieving current normal (r0)-------
+texld r0, t2, s2
+mov r1, c22
+mad r0, r0, r1, -c21
+
+texld r1, t5, s2
+mov r2, c22
+mad r1, r1, r2, -c21
+mul r1, r1, c29.x   //minska normalens betydelse
+
+add r1, r0, r1
+mul r1.y, r1.y, c30.z
+nrm r0, -r1
+//------------------------------------
+
+//spegelblank yta
+//mov r0, c31
+
+dp3 r1.w, r13, r0 //view-normal angle
+
+//Blending ops------------------------------------------
+texld r6, t1, s3       //sampling distance tex
+mul r7, r6, c13
+//--------------------------------------------------------------
+//water transparency
+sub r7.a, c21.x, r1.w
+mul r7.a, r7.a, c12.x   //modulera genomskinlighet
+//add_sat r7.a, r1.w, c30.x
+
+mov oC0, r7
+

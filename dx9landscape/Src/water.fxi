@@ -1,0 +1,58 @@
+float wClipSide;
+float wClipOffset;
+
+float calcTurbOtherSide(in float3 vPos)
+{
+	//Water level is assumed to be at y=0
+	float3 distVec = camPos - vPos;
+	float turbWeight = abs(vPos.y/distVec.y);
+	float dist = distance(camPos, vPos);
+	
+	float turbDist = turbWeight * dist;
+	return maxTurb * saturate((turbDist - turbStart) / turbLength);
+}
+
+float calcFogOtherSide(in float3 vPos)
+{
+	//Water level is assumed to be at y=0
+	float3 distVec = camPos - vPos;
+	float fogWeight = abs(vPos.y/distVec.y);
+	float dist = distance(camPos, vPos);
+	
+	float fogDist = fogWeight * dist;
+	return maxFog * saturate((fogDist - fogStart) / fogLength);	
+}
+
+
+float calcTurb(in float3 vertexPos : POSITION) : FOG
+{
+	return maxTurb * saturate((distance(vertexPos, camPos) - turbStart) / turbLength);
+}
+
+void waterClip(in float y)
+{
+	clip(y);
+	clip(y * wClipSide + 2);
+}
+
+float3 refractVertex(in float3 vPos, in float side)
+{
+	float3 distVec = camPos - vPos;
+	float3 wDistVec = abs((vPos.y/distVec.y) * distVec);
+	float wDist = distance(wDistVec, float3(0,0,0));
+	
+	float3 viewVec = normalize(distVec);
+	float3 offsetVec = (float3(0,side,0) - viewVec) * wDist;
+	
+	return vPos + offsetVec * 0.3 * side;
+}
+
+float calcFresnel(float x)
+{
+   // (1-N.V)^4
+   float NdotV5 = pow (x, 4);
+
+   // scale and bias to fit to real fresnel curve
+   return min((NdotV5 * 0.95f) + 0.05f, 1);
+
+}
