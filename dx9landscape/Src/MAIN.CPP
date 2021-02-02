@@ -95,7 +95,7 @@ void initApp()
 		throw "Hardware doesn't support destination alpha blends.";
 	
 	if (!dataPak.load(dataPath + "data.dat"))
-		throw "Couldn't load data.dat";
+		throw (string)"Couldn't load " + workingDir + "\\data.dat";
     	
 	nearClip=0.05f;
 	farClip=1000;
@@ -907,16 +907,16 @@ void C3dEntity::update()
 	a.z += -(joy[defJoy].state.lRz) * 0.001f;
 	pos = (float)joy[defJoy].state.rglSlider[0] * lookDir * -0.001f;
 
-	if (keydown(DIK_LEFT))
+	if (keydown(DIK_A))
 		pos-=leftDir;
 	
-	if (keydown(DIK_RIGHT))
+	if (keydown(DIK_D))
 		pos+=leftDir;
 
-	if (keydown(DIK_UP))
+	if (keydown(DIK_W))
 		pos += lookDir;
 	
-	if (keydown(DIK_DOWN))
+	if (keydown(DIK_S))
 		pos -= lookDir;
 	
 	if (keydown(DIK_LSHIFT) || keydown(DIK_RSHIFT))
@@ -925,20 +925,6 @@ void C3dEntity::update()
 	if (keydown(DIK_LCONTROL) || keydown(DIK_RCONTROL))
 		pos -= upDir;
 	
-//----------------------
-	if (keydown(DIK_Q))
-		a.x+=1;
-	if (keydown(DIK_A))
-		a.x+=-1;
-	if (keydown(DIK_W))
-		a.y+=1;
-	if (keydown(DIK_S))
-		a.y+=-1;
-	if (keydown(DIK_E))
-		a.z+=1;
-	if (keydown(DIK_D))
-		a.z+=-1;
-		
 	float v=a.getValue();
 	if (v>1)
 		a/=v;
