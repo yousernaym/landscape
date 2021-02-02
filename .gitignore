@@ -1,3 +1,5 @@
+*.zip
+/InnoSetup/Output
 *.jpg
 *.png
 landscape
